@@ -1,0 +1,140 @@
+.profile-page {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+
+.profile-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.profile-header {
+  background: linear-gradient(135deg, #4a90e2, #50e3c2);
+  height: 150px;
+  position: relative;
+}
+
+.profile-avatar-wrapper {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  margin: -75px auto 0;
+  background: #eee;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.profile-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.profile-body {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.profile-display-name {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0.5rem 0 0.25rem;
+  color: #333;
+}
+
+.profile-username {
+  font-size: 1rem;
+  color: #777;
+  margin-bottom: 1rem;
+}
+
+.profile-bio {
+  font-size: 1rem;
+  color: #555;
+  max-width: 450px;
+  margin: 0 auto 1.5rem;
+}
+
+.profile-actions button,
+.edit-form button {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.profile-actions button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.4);
+}
+
+.edit-form {
+  padding: 1.5rem;
+  background-color: #f9f9f9;
+  border-top: 1px solid #eee;
+}
+
+.edit-form .form-group {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.edit-form label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.edit-form input,
+.edit-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.edit-form input:focus,
+.edit-form textarea:focus {
+  outline: none;
+  border-color: #4a90e2;
+}
+
+.edit-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.form-actions .save-btn {
+  background-color: #50e3c2;
+}
+.form-actions .save-btn:hover {
+  box-shadow: 0 4px 12px rgba(80, 227, 194, 0.4);
+}
+
+.cooldown-message {
+  font-size: 0.9rem;
+  color: #e91e63;
+  background-color: rgba(233, 30, 99, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 1rem;
+}

@@ -1,9 +1,10 @@
-import axios from 'axios';
+// stickmangame-frontend/src/services/authService.js
+import api from '../api/axiosConfig.js'; // Sử dụng instance api đã cấu hình, thêm .js
 
-const API_URL = 'http://localhost:5000/api/auth';
+const API_URL = '/api/auth';
 
 const register = (username, password, phoneNumber) => {
-  return axios.post(`${API_URL}/register`, {
+  return api.post(`${API_URL}/register`, {
     username,
     password,
     phoneNumber,
@@ -11,7 +12,7 @@ const register = (username, password, phoneNumber) => {
 };
 
 const login = (username, password) => {
-  return axios.post(`${API_URL}/login`, {
+  return api.post(`${API_URL}/login`, {
     username,
     password,
   });

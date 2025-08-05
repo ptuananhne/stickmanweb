@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api/axiosConfig.js'; // Import instance api đã cấu hình, thêm .js
 import './ProfilePage.css'; // Import file CSS mới
 
 const ProfilePage = () => {
@@ -21,7 +21,7 @@ const ProfilePage = () => {
           Authorization: `Bearer ${token}`,
         },
       };
-      const { data } = await axios.get('/api/users/profile', config);
+      const { data } = await api.get('/api/users/profile', config);
       setProfile(data);
       setFormData({
         displayName: data.displayName,
@@ -46,6 +46,7 @@ const ProfilePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError(''); // Xóa lỗi cũ khi submit
     try {
         const token = localStorage.getItem('token');
         const config = {
@@ -53,7 +54,7 @@ const ProfilePage = () => {
             Authorization: `Bearer ${token}`,
             },
         };
-        const { data } = await axios.put('/api/users/profile', formData, config);
+        const { data } = await api.put('/api/users/profile', formData, config);
         setProfile(data);
         setIsEditing(false);
     } catch (err) {

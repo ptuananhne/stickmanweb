@@ -24,7 +24,7 @@ app.get('/api/test', (req, res) => {
 // Sử dụng auth routes
 app.use('/api/auth', require('./routes/authRoutes'));
 
-
+app.use('/api/users', require('./routes/userRoutes'));
 // Lấy cổng từ file .env hoặc mặc định là 5000
 const PORT = process.env.PORT || 5000;
 
