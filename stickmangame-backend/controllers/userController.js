@@ -2,6 +2,8 @@
 const User = require('../models/User');
 
 // @desc    Lấy thông tin cá nhân của người dùng
+// @route   GET /api/users/profile
+// @access  Private
 const getUserProfile = async (req, res) => {
   // req.user được gắn từ middleware `protect`
   if (req.user) {
@@ -19,25 +21,34 @@ const getUserProfile = async (req, res) => {
 };
 
 // @desc    Cập nhật thông tin cá nhân
+// @route   PUT /api/users/profile
+// @access  Private
 const updateUserProfile = async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
-    const { displayName, bio, avatarUrl } = req.body;
+    const { displayName, bio } = req.body;
     let infoChanged = false;
 
     // Chỉ cho phép thay đổi displayName và bio sau 90 ngày
-    if (displayName !== user.displayName || bio !== user.bio) {
-      const ninetyDays = 90 * 24 * 60 * 60 * 1000;
-      if (user.lastInfoChange && (new Date() - user.lastInfoChange < ninetyDays)) {
-        return res.status(400).json({ message: 'Bạn chỉ có thể thay đổi thông tin cá nhân 3 tháng một lần.' });
-      }
-      infoChanged = true;
+    if (displayName !== user.displayName || (bio && bio !== user.bio)) {
+        const ninetyDays = 90 * 24 * 60 * 60 * 1000;
+        if (user.lastInfoChange && (new Date() - new Date(user.lastInfoChange) < ninetyDays)) {
+            return res.status(400).json({ message: 'Bạn chỉ có thể thay đổi thông tin cá nhân 3 tháng một lần.' });
+        }
+        infoChanged = true;
     }
 
     user.displayName = displayName || user.displayName;
     user.bio = bio || user.bio;
-    user.avatarUrl = avatarUrl || user.avatarUrl;
+    
+    // Logic cập nhật avatar từ file upload
+    if (req.file) {
+      // multer sẽ lưu file và trả thông tin trong req.file
+      // Chúng ta lưu đường dẫn vào database, chuẩn hóa dấu gạch chéo cho web
+      user.avatarUrl = `/${req.file.path.replace(/\\/g, "/")}`;
+    }
+
     if (infoChanged) {
       user.lastInfoChange = new Date();
     }

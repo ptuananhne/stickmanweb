@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const path = require('path');
 const cors = require('cors');
 const connectDB = require('./config/db');
 
@@ -23,7 +24,7 @@ app.get('/api/test', (req, res) => {
 
 // Sử dụng auth routes
 app.use('/api/auth', require('./routes/authRoutes'));
-
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 app.use('/api/users', require('./routes/userRoutes'));
 // Lấy cổng từ file .env hoặc mặc định là 5000
 const PORT = process.env.PORT || 5000;
