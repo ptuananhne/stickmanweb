@@ -2,16 +2,14 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const multer = require('multer');
-const { getUserProfile, updateUserProfile } = require('../controllers/userController');
+const { getUserProfile, updateUserProfile, sendVerificationOTP, verifyPhoneNumber } = require('../controllers/userController');
 const { protect } = require('../middleware/authMiddleware');
 
-// --- CẤU HÌNH MULTER ---
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, 'uploads/'); // Nơi lưu file
+    cb(null, 'uploads/');
   },
   filename(req, file, cb) {
-    // Tạo tên file duy nhất
     cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
   },
 });
@@ -34,12 +32,12 @@ const upload = multer({
     checkFileType(file, cb);
   },
 });
-// --- KẾT THÚC CẤU HÌNH MULTER ---
 
-// /api/users/profile
 router.route('/profile')
   .get(protect, getUserProfile)
-  // Thêm middleware upload.single('avatar')
   .put(protect, upload.single('avatar'), updateUserProfile);
+
+router.post('/profile/send-otp', protect, sendVerificationOTP);
+router.post('/profile/verify-otp', protect, verifyPhoneNumber);
 
 module.exports = router;

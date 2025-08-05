@@ -1,37 +1,29 @@
-// stickmangame-frontend/src/context/AuthContext.jsx
-
 import React, { createContext, useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode'; // Sửa import
+import { jwtDecode } from 'jwt-decode';
+import api from '../api/axiosConfig.js';
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      try {
-        const decodedToken = jwtDecode(token);
-        // Kiểm tra xem token đã hết hạn chưa
-        if (decodedToken.exp * 1000 > Date.now()) {
-          setUser(decodedToken.user);
-        } else {
-          localStorage.removeItem('token'); // Xóa token hết hạn
-        }
-      } catch (error) {
-        console.error("Lỗi giải mã token:", error);
-        localStorage.removeItem('token');
-      }
+  const fetchFullProfile = async (token) => {
+    try {
+      const config = { headers: { Authorization: `Bearer ${token}` } };
+      const { data } = await api.get('/api/users/profile', config);
+      setUser(data);
+    } catch (err) {
+      console.error("Không thể lấy thông tin profile", err);
+      const { user: basicUser } = jwtDecode(token);
+      setUser(basicUser);
     }
-    setLoading(false);
-  }, []);
+  };
 
-  const login = (token) => {
+  const login = async (token) => {
     localStorage.setItem('token', token);
-    const decodedToken = jwtDecode(token);
-    setUser(decodedToken.user);
+    await fetchFullProfile(token);
   };
 
   const logout = () => {
@@ -39,15 +31,39 @@ const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const initializeAuth = async () => {
+      if (token) {
+        try {
+          const decodedToken = jwtDecode(token);
+          if (decodedToken.exp * 1000 > Date.now()) {
+            await fetchFullProfile(token);
+          } else {
+            logout();
+          }
+        } catch (error) {
+          console.error("Token không hợp lệ", error);
+          logout();
+        }
+      }
+      setLoading(false);
+    };
+    initializeAuth();
+  }, []);
+
   const value = {
     user,
     login,
     logout,
     isAuthenticated: !!user,
+    loading, // Thêm loading vào đây
+    fetchFullProfile,
   };
 
   return (
     <AuthContext.Provider value={value}>
+      {/* Chỉ render khi không còn loading nữa */}
       {!loading && children}
     </AuthContext.Provider>
   );

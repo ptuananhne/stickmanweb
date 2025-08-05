@@ -8,12 +8,13 @@ const userSchema = new mongoose.Schema({
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
   playTurns: { type: Map, of: Number, default: {} },
   
-  // --- THÊM CÁC TRƯỜNG MỚI ---
   displayName: { type: String, default: '' },
   bio: { type: String, maxlength: 200, default: '' },
   avatarUrl: { type: String, default: 'https://placehold.co/150x150/EFEFEF/333?text=Avatar' },
   lastInfoChange: { type: Date },
-  // -------------------------
+  
+  phoneVerificationCode: { type: String },
+  phoneVerificationExpires: { type: Date },
 
 }, {
   timestamps: true

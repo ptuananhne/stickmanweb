@@ -1,13 +1,14 @@
-// stickmangame-frontend/src/App.jsx
-
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
-import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
+import PrivateRoute from './components/PrivateRoute';
+import PublicRoute from './components/PublicRoute';
+import AdminRoute from './components/AdminRoute';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import ProfilePage from './pages/ProfilePage'; // Import ProfilePage
+import ProfilePage from './pages/ProfilePage';
+import AdminPage from './pages/AdminPage';
 
 function App() {
   return (
@@ -15,16 +16,27 @@ function App() {
       <Header />
       <main>
         <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          {/* --- Cấu trúc Route mới và logic hơn --- */}
 
-          {/* Private Routes */}
+          {/* Route công khai mà ai cũng xem được */}
+          <Route path="/" element={<HomePage />} />
+
+          {/* Các route chỉ dành cho người chưa đăng nhập */}
+          <Route element={<PublicRoute />}>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+          </Route>
+
+          {/* Các route chỉ dành cho người đã đăng nhập */}
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<ProfilePage />} />
-            {/* Các trang cần đăng nhập khác sẽ được đặt ở đây */}
+            
+            {/* Route chỉ dành cho Admin (được lồng bên trong PrivateRoute) */}
+            <Route element={<AdminRoute />}>
+              <Route path="/admin" element={<AdminPage />} />
+            </Route>
           </Route>
+          
         </Routes>
       </main>
     </>
