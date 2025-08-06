@@ -20,7 +20,6 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Gán displayName bằng username khi tạo user mới
 userSchema.pre('save', function(next) {
   if (this.isNew && !this.displayName) {
     this.displayName = this.username;

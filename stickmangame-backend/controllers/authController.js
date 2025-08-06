@@ -2,7 +2,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// @desc    Đăng ký người dùng mới
 const registerUser = async (req, res) => {
   const { username, password, phoneNumber } = req.body;
 
@@ -29,7 +28,6 @@ const registerUser = async (req, res) => {
   }
 };
 
-// @desc    Đăng nhập người dùng
 const loginUser = async (req, res) => {
   const { username, password } = req.body;
   try {

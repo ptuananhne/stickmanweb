@@ -29,11 +29,11 @@ const HomePage = () => {
         <div className="hero-content">
           <h1>Thế Giới Game Stickman</h1>
           <p>Khám phá, chinh phục và leo lên đỉnh vinh quang trong các trò chơi hấp dẫn nhất!</p>
-          <Link to="/games" className="hero-button">Chơi Ngay</Link>
+          <a href="#game-list-section" className="hero-button">Chơi Ngay</a>
         </div>
       </section>
 
-      <section className="game-list-section">
+      <section id="game-list-section" className="game-list-section">
         <h2>Các Trò Chơi Nổi Bật</h2>
         {loading ? (
           <p>Đang tải danh sách game...</p>

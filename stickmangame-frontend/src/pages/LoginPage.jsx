@@ -12,7 +12,6 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
-  // 1. Chuyển handleSubmit thành hàm async
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -20,7 +19,6 @@ const LoginPage = () => {
     try {
       const response = await authService.login(username, password);
       if (response.data.token) {
-        // 2. Đợi cho hàm login trong context hoàn thành
         await login(response.data.token);
         navigate('/');
       }

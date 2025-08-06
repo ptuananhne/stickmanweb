@@ -1,7 +1,5 @@
-// stickmangame-backend/controllers/gameController.js
 const Game = require('../models/Game');
 
-// @desc    Tạo một game mới
 const createGame = async (req, res) => {
   const { name, description, gameUrl, category } = req.body;
 
@@ -20,7 +18,7 @@ const createGame = async (req, res) => {
       description,
       gameUrl,
       category,
-      thumbnailUrl: `/${req.file.path.replace(/\\/g, "/")}`, // Lưu đường dẫn ảnh
+      thumbnailUrl: `/${req.file.path.replace(/\\/g, "/")}`, 
     });
 
     const createdGame = await newGame.save();
@@ -31,7 +29,6 @@ const createGame = async (req, res) => {
   }
 };
 
-// @desc    Lấy tất cả game
 const getGames = async (req, res) => {
   try {
     const games = await Game.find({});
@@ -41,7 +38,6 @@ const getGames = async (req, res) => {
   }
 };
 
-// @desc    Lấy thông tin một game theo ID
 const getGameById = async (req, res) => {
   try {
     const game = await Game.findById(req.params.id);

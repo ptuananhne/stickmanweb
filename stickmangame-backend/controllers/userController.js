@@ -1,6 +1,5 @@
 const User = require('../models/User');
 
-// @desc    Lấy thông tin cá nhân của người dùng
 const getUserProfile = async (req, res) => {
   if (req.user) {
     res.json({
@@ -11,14 +10,13 @@ const getUserProfile = async (req, res) => {
       avatarUrl: req.user.avatarUrl,
       lastInfoChange: req.user.lastInfoChange,
       isPhoneVerified: req.user.isPhoneVerified,
-      role: req.user.role, // THÊM DÒNG NÀY
+      role: req.user.role, 
     });
   } else {
     res.status(404).json({ message: 'Không tìm thấy người dùng' });
   }
 };
 
-// @desc    Cập nhật thông tin cá nhân
 const updateUserProfile = async (req, res) => {
   const user = await User.findById(req.user._id);
 
@@ -51,14 +49,13 @@ const updateUserProfile = async (req, res) => {
       avatarUrl: updatedUser.avatarUrl,
       lastInfoChange: updatedUser.lastInfoChange,
       isPhoneVerified: updatedUser.isPhoneVerified,
-      role: updatedUser.role, // THÊM DÒNG NÀY
+      role: updatedUser.role, 
     });
   } else {
     res.status(404).json({ message: 'Không tìm thấy người dùng' });
   }
 };
 
-// Các hàm sendVerificationOTP và verifyPhoneNumber không đổi...
 const sendVerificationOTP = async (req, res) => {
   const user = await User.findById(req.user._id);
   if (user) {

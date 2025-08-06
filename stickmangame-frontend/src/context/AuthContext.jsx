@@ -57,13 +57,12 @@ const AuthProvider = ({ children }) => {
     login,
     logout,
     isAuthenticated: !!user,
-    loading, // Thêm loading vào đây
+    loading, 
     fetchFullProfile,
   };
 
   return (
     <AuthContext.Provider value={value}>
-      {/* Chỉ render khi không còn loading nữa */}
       {!loading && children}
     </AuthContext.Provider>
   );

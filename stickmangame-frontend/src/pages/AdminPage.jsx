@@ -1,7 +1,6 @@
-// stickmangame-frontend/src/pages/AdminPage.jsx
 import React, { useState, useEffect } from 'react';
 import api from '../api/axiosConfig.js';
-import '../index.css'; // Sẽ tạo file này ngay sau đây
+import '../index.css'; 
 
 const AdminPage = () => {
   const [games, setGames] = useState([]);
@@ -36,21 +35,17 @@ const AdminPage = () => {
     formData.append('thumbnail', thumbnail);
 
     try {
-      const token = localStorage.getItem('token');
-      const config = {
+      const { data } = await api.post('/api/games', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
         },
-      };
-      const { data } = await api.post('/api/games', formData, config);
+      });
       setGames([...games, data]);
-      // Reset form
       setName('');
       setDescription('');
       setGameUrl('');
       setThumbnail(null);
-      e.target.reset(); // Xóa file đã chọn khỏi input
+      e.target.reset(); 
     } catch (err) {
       setError(err.response?.data?.message || 'Lỗi khi thêm game.');
     } finally {
@@ -69,7 +64,7 @@ const AdminPage = () => {
             {error && <p className="error-message">{error}</p>}
             <input type="text" placeholder="Tên Game" value={name} onChange={(e) => setName(e.target.value)} required />
             <textarea placeholder="Mô tả" value={description} onChange={(e) => setDescription(e.target.value)} required></textarea>
-            <input type="text" placeholder="URL của Game" value={gameUrl} onChange={(e) => setGameUrl(e.target.value)} required />
+            <input type="text" placeholder="URL của Game (vd: /games/flappy-bird/index.html)" value={gameUrl} onChange={(e) => setGameUrl(e.target.value)} required />
             <label>Ảnh Thumbnail:</label>
             <input type="file" onChange={(e) => setThumbnail(e.target.files[0])} required />
             <button type="submit" disabled={loading}>{loading ? 'Đang thêm...' : 'Thêm Game'}</button>
@@ -81,7 +76,7 @@ const AdminPage = () => {
           <div className="game-list-admin">
             {games.map(game => (
               <div key={game._id} className="game-item-admin">
-                <img src={`http://localhost:5000${game.thumbnailUrl}`} alt={game.name} />
+                <img src={`${import.meta.env.VITE_API_BASE_URL}${game.thumbnailUrl}`} alt={game.name} />
                 <span>{game.name}</span>
               </div>
             ))}

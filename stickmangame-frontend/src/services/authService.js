@@ -1,5 +1,4 @@
-// stickmangame-frontend/src/services/authService.js
-import api from '../api/axiosConfig.js'; // Sử dụng instance api đã cấu hình, thêm .js
+import api from '../api/axiosConfig.js'; 
 
 const API_URL = '/api/auth';
 

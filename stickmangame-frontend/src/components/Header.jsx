@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext.jsx';
 import '../index.css';
+
 const Header = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -15,7 +16,6 @@ const Header = () => {
 
   const closeMenu = () => setIsMenuOpen(false);
 
-  // Hàm helper để xác định URL avatar chính xác
   const getAvatarSrc = (url) => {
     if (!url) {
       return 'https://placehold.co/36x36/EFEFEF/333?text=A';
@@ -23,7 +23,7 @@ const Header = () => {
     if (url.startsWith('http') || url.startsWith('data:')) {
       return url;
     }
-    return `http://localhost:5000${url}`;
+    return `${import.meta.env.VITE_API_BASE_URL}${url}`;
   };
 
   return (
@@ -47,7 +47,6 @@ const Header = () => {
                     alt="Avatar" 
                     onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/36x36' }}
                   />
-                  {/* Hiển thị displayName nếu có, nếu không thì username */}
                   <span>{user.displayName || user.username}</span>
                 </Link>
               </li>
