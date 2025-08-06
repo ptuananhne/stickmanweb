@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const multer = require('multer');
-const { createGame, getGames } = require('../controllers/gameController');
+const { createGame, getGames, getGameById } = require('../controllers/gameController');
 const { protect } = require('../middleware/authMiddleware');
 const { admin } = require('../middleware/adminMiddleware');
 
@@ -22,5 +22,5 @@ const upload = multer({ storage });
 router.route('/')
   .post(protect, admin, upload.single('thumbnail'), createGame) // Chỉ admin mới được tạo game
   .get(getGames); // Mọi người đều có thể xem danh sách game
-
+router.route('/:id').get(getGameById);
 module.exports = router;

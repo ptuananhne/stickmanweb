@@ -41,4 +41,18 @@ const getGames = async (req, res) => {
   }
 };
 
-module.exports = { createGame, getGames };
+// @desc    Lấy thông tin một game theo ID
+const getGameById = async (req, res) => {
+  try {
+    const game = await Game.findById(req.params.id);
+    if (game) {
+      res.json(game);
+    } else {
+      res.status(404).json({ message: 'Không tìm thấy game' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Lỗi Server' });
+  }
+};
+
+module.exports = { createGame, getGames, getGameById };

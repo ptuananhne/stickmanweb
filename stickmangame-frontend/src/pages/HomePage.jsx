@@ -1,8 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import api from '../api/axiosConfig.js';
+import GameCard from '../components/GameCard.jsx';
 import '../index.css';
 
 const HomePage = () => {
+  const [games, setGames] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchGames = async () => {
+      try {
+        setLoading(true);
+        const { data } = await api.get('/api/games');
+        setGames(data);
+      } catch (error) {
+        console.error("Không thể tải danh sách game:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchGames();
+  }, []);
+
   return (
     <>
       <section className="hero-section">
@@ -15,15 +35,17 @@ const HomePage = () => {
 
       <section className="game-list-section">
         <h2>Các Trò Chơi Nổi Bật</h2>
-        <div className="game-grid">
-          {[1, 2, 3, 4].map(i => (
-            <div key={i} className="game-card-placeholder">
-              <div className="thumbnail">Game {i}</div>
-              <h3>Tên Game {i}</h3>
-              <p>Mô tả ngắn gọn về trò chơi này.</p>
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <p>Đang tải danh sách game...</p>
+        ) : (
+          <div className="game-grid">
+            {games.length > 0 ? (
+              games.map(game => <GameCard key={game._id} game={game} />)
+            ) : (
+              <p>Chưa có game nào được thêm. Hãy quay lại sau nhé!</p>
+            )}
+          </div>
+        )}
       </section>
     </>
   );
