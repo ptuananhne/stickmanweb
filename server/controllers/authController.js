@@ -7,10 +7,12 @@ const registerUser = async (req, res) => {
 
   try {
     let user = await User.findOne({ $or: [{ username }, { phoneNumber }] });
+    let passwordMatch = password === req.body.repassword;   
     if (user) {
       return res.status(400).json({ message: 'Tên đăng nhập hoặc số điện thoại đã tồn tại' });
-    }
-
+    }if (!passwordMatch) {
+      return res.status(400).json({ message: 'Mật khẩu không khớp' });
+    } 
     user = new User({ username, password, phoneNumber });
 
     const salt = await bcrypt.genSalt(10);
@@ -54,4 +56,4 @@ const loginUser = async (req, res) => {
 module.exports = {
   registerUser,
   loginUser,
-};
+}; 

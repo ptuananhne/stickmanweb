@@ -6,6 +6,7 @@ import '../index.css';
 const RegisterPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [repassword, setRePassword] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -16,7 +17,7 @@ const RegisterPage = () => {
     setError('');
     setLoading(true);
     try {
-      await authService.register(username, password, phoneNumber);
+      await authService.register(username, password,repassword, phoneNumber);
       navigate('/login');
     } catch (err) {
       setError(err.response?.data?.message || 'Đã có lỗi xảy ra.');
@@ -46,7 +47,10 @@ const RegisterPage = () => {
               <input id="password" type="password" placeholder="Mật khẩu" value={password} onChange={(e) => setPassword(e.target.value)} required disabled={loading} />
               <span className="input-icon">🔒</span>
             </div>
-
+             <div className="form-group">
+              <input id="repassword" type="password" placeholder="Nhập lại mật khẩu" value={repassword} onChange={(e) => setRePassword(e.target.value)} required disabled={loading} />
+              <span className="input-icon">✒️</span>
+            </div>
             <div className="form-group">
               <input id="phoneNumber" type="tel" placeholder="Số điện thoại" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required disabled={loading} />
               <span className="input-icon">📞</span>
