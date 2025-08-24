@@ -1,0 +1,909 @@
+/* ==============================================
+   1. BIẾN TOÀN CỤC & THIẾT LẬP CƠ BẢN
+   ============================================== */
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --primary-color: #4a90e2;
+  --secondary-color: #50e3c2;
+  --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+
+  --bg-color: #F0F4F8; 
+  --surface-color: #FFFFFF; 
+  --border-color: #E2E8F0;
+
+  --text-primary: #1A202C;
+  --text-secondary: #4A5568;
+  --text-on-primary: #FFFFFF;
+  
+  --error-color: #d32f2f;
+  --error-bg-color: rgba(211, 47, 47, 0.1);
+
+  --font-family: 'Be Vietnam Pro', sans-serif;
+
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  --transition-normal: all 0.3s ease-in-out;
+}
+
+body.dark {
+  --primary-color: #60a5fa;
+  --secondary-color: #34d399;
+  
+  --bg-color: #111827;
+  --surface-color: #1f2937;
+  --border-color: #374151;
+
+  --text-primary: #f9fafb;
+  --text-secondary: #9ca3af;
+  
+  --error-color: #FC8181;
+  --error-bg-color: rgba(252, 129, 129, 0.1);
+  
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+}
+
+body {
+  font-family: var(--font-family);
+  margin: 0;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+main {
+  padding-top: 70px; 
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+.page-container {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.error-message {
+  color: var(--error-color);
+  background-color: var(--error-bg-color);
+  padding: 0.75rem;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* ==============================================
+   2. HEADER
+   ============================================== */
+.main-header {
+  background-color: var(--surface-color);
+  box-shadow: var(--shadow-md);
+  padding: 0 2rem;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  border-bottom: 1px solid var(--border-color);
+  transition: var(--transition-normal);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.logo span {
+  color: var(--primary-color);
+}
+
+.main-header nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.main-header nav a {
+  color: var(--text-secondary);
+  font-weight: 600;
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+.main-header nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--primary-color);
+  transition: width 0.3s ease;
+}
+
+.main-header nav a:hover::after, .main-header nav a.active::after {
+  width: 100%;
+}
+
+.main-header nav a:hover, .main-header nav a.active {
+    color: var(--text-primary);
+}
+
+.profile-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.profile-link img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary-color);
+}
+
+.logout-button {
+  font-family: var(--font-family);
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+.logout-button:hover {
+  color: var(--primary-color);
+}
+
+
+/* ==============================================
+   3. TRANG CHỦ (HERO & GAME LIST)
+   ============================================== */
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 5rem 1rem;
+  background: var(--gradient-primary);
+  color: var(--text-on-primary);
+}
+
+.hero-content h1 {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.hero-content p {
+  font-size: 1.1rem;
+  margin: 0 auto 2rem;
+  max-width: 600px;
+}
+
+.hero-button {
+  background-color: var(--text-on-primary);
+  color: var(--primary-color);
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  font-weight: 700;
+  transition: var(--transition-normal);
+}
+.hero-button:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.game-list-section {
+  padding: 4rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.game-list-section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* ==============================================
+   4. THẺ GAME (GAMECARD)
+   ============================================== */
+.game-card {
+  background-color: var(--surface-color);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-color);
+}
+
+.game-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+.game-card-thumbnail-wrapper {
+  width: 100%;
+  padding-top: 56.25%; 
+  position: relative;
+}
+
+.game-card-thumbnail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.game-card-body {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary);
+}
+
+.game-card-description {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+  flex-grow: 1;
+}
+
+
+/* ==============================================
+   5. TRANG GAME CHI TIẾT
+   ============================================== */
+.game-page-wrapper {
+  padding: 2rem;
+}
+
+.game-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+@media (min-width: 1024px) {
+  .game-layout {
+    grid-template-columns: minmax(0, 3fr) minmax(320px, 1fr);
+  }
+}
+
+.game-viewport {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  background-color: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.game-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.game-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.game-details-card, .related-games-card {
+  background-color: var(--surface-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.game-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.game-thumbnail-small {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.game-title-details {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.game-description-details h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.game-description-details p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.game-meta {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.meta-item strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.fullscreen-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--primary-color);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+
+.fullscreen-button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.related-games-card h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.related-games-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.related-game-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: var(--transition-normal);
+}
+
+.related-game-item:hover {
+  background-color: var(--bg-color);
+}
+
+.related-game-item img {
+  width: 90px;
+  height: 60px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.related-game-item span {
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+.related-game-item:hover span {
+  color: var(--text-primary);
+}
+
+
+/* ==============================================
+   6. TRANG ĐĂNG NHẬP / ĐĂNG KÝ
+   ============================================== */
+.auth-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 70px);
+  padding: 2rem;
+}
+
+.auth-card {
+  display: flex;
+  width: 100%;
+  max-width: 900px;
+  background-color: var(--surface-color);
+  border-radius: 20px;
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.auth-panel {
+  flex: 1;
+  padding: 4rem;
+  background: var(--gradient-primary);
+  color: var(--text-on-primary);
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .auth-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+.auth-panel h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.auth-panel p {
+  font-size: 1.1rem;
+  max-width: 300px;
+}
+
+.auth-form-container {
+  flex: 1;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-form-container h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.auth-form .form-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.auth-form .input-icon {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  pointer-events: none; 
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 3rem; 
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  transition: var(--transition-normal);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 20%, transparent);
+}
+
+.auth-form button {
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-radius: 10px;
+  background: var(--gradient-primary);
+  color: var(--text-on-primary);
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+
+.auth-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.auth-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.auth-switch-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: var(--text-secondary);
+}
+
+/* ==============================================
+   7. TRANG CÁ NHÂN (PROFILE)
+   ============================================== */
+.profile-page {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.profile-card {
+  background: var(--surface-color);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.profile-header {
+  background: var(--gradient-primary);
+  height: 150px;
+}
+
+.profile-avatar-wrapper {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 5px solid var(--surface-color);
+  margin: -75px auto 0;
+  background: var(--bg-color);
+}
+
+.profile-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.profile-body {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.profile-display-name {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0.5rem 0 0.25rem;
+}
+
+.profile-username {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.verified-badge {
+  background-color: color-mix(in srgb, var(--secondary-color) 15%, transparent);
+  color: var(--secondary-color);
+  padding: 0.3rem 0.8rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-left: 0.5rem;
+}
+
+.profile-bio {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 450px;
+  margin: 1rem auto 1.5rem;
+}
+
+.profile-actions button, .edit-form button, .verification-section button {
+  background-color: var(--primary-color);
+  color: var(--text-on-primary);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-normal);
+  font-family: var(--font-family);
+}
+.profile-actions button:hover, .edit-form button:hover, .verification-section button:hover {
+    filter: brightness(1.1);
+}
+
+.edit-form {
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.edit-form .form-group {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.edit-form label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: block;
+  color: var(--text-secondary);
+}
+
+.edit-form input, .edit-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-sizing: border-box;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+}
+.edit-form input:focus, .edit-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.edit-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  justify-content: flex-end;
+}
+
+.form-actions .cancel-btn {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+.form-actions .cancel-btn:hover {
+    background-color: var(--bg-color);
+}
+
+
+.cooldown-message {
+  font-size: 0.9rem;
+  color: #e91e63;
+  background-color: rgba(233, 30, 99, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+body.dark .cooldown-message {
+  color: #f7719b;
+  background-color: rgba(247, 113, 155, 0.1);
+}
+
+.verification-section {
+  background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
+  border: 1px solid var(--primary-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.verification-section h3 {
+  margin-top: 0;
+  color: var(--primary-color);
+}
+
+.otp-form {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.otp-form input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  text-align: center;
+  font-size: 1.2rem;
+  width: 150px;
+  box-sizing: border-box;
+  background-color: var(--surface-color);
+  color: var(--text-primary);
+}
+
+/* ==============================================
+   8. TRANG ADMIN
+   ============================================== */
+.admin-page {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 2rem auto;
+}
+.admin-container {
+  background: var(--surface-color);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+}
+.admin-container h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.admin-section {
+  margin-bottom: 3rem;
+}
+.admin-section h2 {
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.admin-form input, .admin-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-sizing: border-box;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+}
+.admin-form button {
+  background-color: var(--primary-color);
+  color: var(--text-on-primary);
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-family: var(--font-family);
+}
+.game-list-admin {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+}
+.game-item-admin {
+  text-align: center;
+}
+.game-item-admin img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+/* ==============================================
+   9. RESPONSIVE CHO MENU MOBILE
+   ============================================== */
+.menu-toggle {
+  display: none; 
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  z-index: 1001;
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+  .main-header nav {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: -100%; 
+    width: 80%;
+    max-width: 300px;
+    height: 100vh;
+    background-color: var(--surface-color);
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 70px 2rem 2rem 2rem;
+    box-shadow: var(--shadow-xl);
+    transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .main-header nav.nav-open {
+    left: 0;
+  }
+  .main-header nav ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    width: 100%;
+  }
+  .main-header nav ul li {
+    width: 100%;
+  }
+  .main-header nav a {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  .main-header nav a:hover {
+      background-color: var(--bg-color);
+  }
+   .main-header nav a::after {
+      display: none;
+  }
+}
