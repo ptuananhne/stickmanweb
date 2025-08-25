@@ -6,7 +6,10 @@ const mongoose = require('mongoose');
 
 const getUserProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    const user = await User.findById(req.user.id)
+      .select('-password')
+      .populate('friends', '_id username displayName avatarUrl')
+      .populate('friendRequestsReceived', '_id username displayName avatarUrl');
     if (!user) {
       return res.status(404).json({ message: 'Không tìm thấy người dùng.' });
     }
@@ -261,7 +264,7 @@ const getPublicProfile = async (req, res) => {
     let canViewFullProfile = targetUser.privacy === 'public';
 
     if (req.user) {
-      const currentUser = await User.findById(req.user.id);
+      const currentUser = req.user; // Tối ưu hóa: Dùng trực tiếp req.user từ middleware
       if (currentUser.friends.includes(targetUser._id)) {
         friendStatus = 'friends';
         canViewFullProfile = true; // Friends can always view full profile
@@ -516,4 +519,34 @@ const updatePrivacy = async (req, res) => {
   }
 };
 
-module.exports = { getUserProfile, updateUserProfile, sendVerificationOTP, verifyPhoneNumber, changePassword, lockUserAccount, unlockUserAccount, getAllUsers, updateUserRole, addPlayTurns, deleteUserAccount, getPublicProfile, getUserRanks, transferPlayTurns, sendFriendRequest, acceptFriendRequest, rejectFriendRequest, removeFriend, updatePrivacy };
+const cancelFriendRequest = async (req, res) => {
+  const senderId = req.user.id;
+  const { recipientId } = req.params;
+
+  try {
+    const sender = await User.findById(senderId);
+    const recipient = await User.findById(recipientId);
+
+    if (!recipient) {
+      return res.status(404).json({ message: 'Không tìm thấy người dùng này.' });
+    }
+
+    // Kiểm tra xem yêu cầu có tồn tại không
+    if (!sender.friendRequestsSent.includes(recipientId) || !recipient.friendRequestsReceived.includes(senderId)) {
+      return res.status(400).json({ message: 'Không tìm thấy yêu cầu kết bạn để hủy.' });
+    }
+
+    // Xóa yêu cầu
+    sender.friendRequestsSent.pull(recipientId);
+    recipient.friendRequestsReceived.pull(senderId);
+
+    await sender.save();
+    await recipient.save();
+
+    res.json({ message: 'Đã hủy yêu cầu kết bạn.' });
+  } catch (err) {
+    res.status(500).json({ message: 'Lỗi khi hủy yêu cầu kết bạn.', error: err.message });
+  }
+};
+
+module.exports = { getUserProfile, updateUserProfile, sendVerificationOTP, verifyPhoneNumber, changePassword, lockUserAccount, unlockUserAccount, getAllUsers, updateUserRole, addPlayTurns, deleteUserAccount, getPublicProfile, getUserRanks, transferPlayTurns, sendFriendRequest, acceptFriendRequest, rejectFriendRequest, cancelFriendRequest, removeFriend, updatePrivacy };

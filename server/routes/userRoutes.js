@@ -3,7 +3,7 @@ const router = express.Router();
 const path = require('path');
 const multer = require('multer');
 const { getUserProfile, updateUserProfile, sendVerificationOTP, verifyPhoneNumber, changePassword, getAllUsers, updateUserRole, addPlayTurns, lockUserAccount, unlockUserAccount, deleteUserAccount, getPublicProfile, getUserRanks, transferPlayTurns, sendFriendRequest, acceptFriendRequest, rejectFriendRequest, cancelFriendRequest, removeFriend, updatePrivacy } = require('../controllers/userController');
-const { protect, admin } = require('../middleware/authMiddleware');
+const { protect, admin, optionalProtect } = require('../middleware/authMiddleware');
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
@@ -44,7 +44,7 @@ router.post('/profile/send-otp', protect, sendVerificationOTP);
 router.post('/profile/verify-otp', protect, verifyPhoneNumber);
 
 // == Public User Routes ==
-router.get('/public/:username', getPublicProfile);
+router.get('/public/:username', optionalProtect, getPublicProfile);
 router.get('/:username/ranks', getUserRanks);
 
 // == Friend Management Routes ==

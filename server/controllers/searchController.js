@@ -4,26 +4,25 @@ const Game = require('../models/Game');
 const searchAll = async (req, res) => {
   const { q } = req.query;
 
-  if (!q) {
-    return res.status(400).json({ message: 'Search query is required.' });
+  if (!q || q.trim().length < 2) {
+    return res.status(400).json({ message: 'Yêu cầu tìm kiếm phải có ít nhất 2 ký tự.' });
   }
 
   try {
-    const searchRegex = new RegExp(q, 'i'); // 'i' for case-insensitive
+    const searchQuery = new RegExp(q, 'i'); // 'i' for case-insensitive
 
-    const [users, games] = await Promise.all([
-      User.find({
-        $or: [
-          { username: searchRegex },
-          { displayName: searchRegex }
-        ]
-      }).select('username displayName avatarUrl'), // Chỉ chọn các trường công khai
-      Game.find({ name: searchRegex })
-    ]);
+    // Tìm kiếm người dùng theo username và displayName
+    const users = await User.find({
+      $or: [{ username: searchQuery }, { displayName: searchQuery }],
+    }).select('_id username displayName avatarUrl'); // Chỉ lấy các trường public
+
+    // Tìm kiếm game theo tên
+    const games = await Game.find({ name: searchQuery }).select('_id name thumbnailUrl description');
 
     res.json({ users, games });
   } catch (error) {
-    res.status(500).json({ message: 'Lỗi máy chủ khi tìm kiếm', error: error.message });
+    console.error('Lỗi khi tìm kiếm:', error);
+    res.status(500).json({ message: 'Lỗi máy chủ' });
   }
 };
 

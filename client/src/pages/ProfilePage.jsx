@@ -31,21 +31,9 @@ const ProfilePage = () => {
         confirmPassword: '',
       });
       setPreviewSource(getAvatarSrc(contextUser.avatarUrl));
-
-      // Fetch full friend/request data
-      const fetchSocialData = async () => {
-        try {
-          const [friendsRes, requestsRes] = await Promise.all([
-            Promise.all(contextUser.friends.map(id => api.get(`/users/public/${id}`))),
-            Promise.all(contextUser.friendRequestsReceived.map(id => api.get(`/users/public/${id}`)))
-          ]);
-          setFriends(friendsRes.map(res => res.data));
-          setFriendRequests(requestsRes.map(res => res.data));
-        } catch (error) {
-          console.error("Lỗi khi tải dữ liệu bạn bè:", error);
-        }
-      };
-      fetchSocialData();
+      // Dữ liệu bạn bè và yêu cầu đã được populate từ backend
+      setFriends(contextUser.friends || []);
+      setFriendRequests(contextUser.friendRequestsReceived || []);
     }
   }, [contextUser]);
 
