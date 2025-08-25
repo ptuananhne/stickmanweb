@@ -17,9 +17,7 @@ const GameCard = ({ game }) => {
       </div>
       <div className="game-card-body">
         <h3 className="game-card-title">{game.name}</h3>
-        <p className="game-card-description">
-          {game.description.length > 100 ? `${game.description.substring(0, 97)}...` : game.description}
-        </p>
+        <p className="game-card-description">{game.description}</p>
       </div>
     </Link>
   );

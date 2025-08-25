@@ -12,7 +12,7 @@ const HomePage = () => {
     const fetchGames = async () => {
       try {
         setLoading(true);
-        const { data } = await api.get('/api/games');
+        const { data } = await api.get('/games');
         setGames(data);
       } catch (error) {
         console.error("Không thể tải danh sách game:", error);

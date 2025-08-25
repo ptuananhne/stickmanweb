@@ -2,28 +2,40 @@ import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import authService from '../services/authService';
 import { AuthContext } from '../context/AuthContext.jsx';
+import toast from 'react-hot-toast';
 import '../index.css';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    if (!username || !password) {
+      toast.error('Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu.');
+      return;
+    }
     setLoading(true);
     try {
       const response = await authService.login(username, password);
-      if (response.data.token) {
-        await login(response.data.token);
-        navigate('/');
+      // Destructure để code an toàn và rõ ràng hơn
+      const { success, data, message } = response.data || {};
+
+      if (success && data?.token) {
+        await login(data.token); // Gọi hàm login từ AuthContext
+        toast.success('Đăng nhập thành công!');
+        navigate('/profile'); // Chuyển hướng đến trang profile
+      } else {
+        // Xử lý trường hợp đăng nhập không thành công từ server (ví dụ: sai thông tin)
+        toast.error(message || 'Tên đăng nhập hoặc mật khẩu không chính xác.');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Đã có lỗi xảy ra.');
+      // Xử lý lỗi mạng hoặc lỗi server (ví dụ: 500)
+      const errorMessage = err.response?.data?.message || 'Đã có lỗi xảy ra. Vui lòng thử lại.';
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -38,16 +50,34 @@ const LoginPage = () => {
         </div>
         <div className="auth-form-container">
           <form className="auth-form" onSubmit={handleSubmit}>
-            <h2>Đăng Nhập</h2>
-            {error && <p className="auth-error-message">{error}</p>}
-            
+            <h2>Đăng Nhập</h2>            
             <div className="form-group">
-              <input id="username" type="text" placeholder="Tên đăng nhập" value={username} onChange={(e) => setUsername(e.target.value)} required disabled={loading} />
+              <label htmlFor="username" className="sr-only">Tên đăng nhập</label>
+              <input 
+                id="username" 
+                type="text" 
+                placeholder="Tên đăng nhập" 
+                value={username} 
+                onChange={(e) => setUsername(e.target.value)} 
+                autoComplete="username"
+                required 
+                disabled={loading} 
+              />
               <span className="input-icon">👤</span>
             </div>
             
             <div className="form-group">
-              <input id="password" type="password" placeholder="Mật khẩu" value={password} onChange={(e) => setPassword(e.target.value)} required disabled={loading} />
+              <label htmlFor="password" className="sr-only">Mật khẩu</label>
+              <input 
+                id="password" 
+                type="password" 
+                placeholder="Mật khẩu" 
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)} 
+                autoComplete="current-password"
+                required 
+                disabled={loading} 
+              />
               <span className="input-icon">🔒</span>
             </div>
             

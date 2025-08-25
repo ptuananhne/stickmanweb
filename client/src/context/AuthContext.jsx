@@ -9,21 +9,20 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchFullProfile = async (token) => {
+  const fetchFullProfile = async () => {
     try {
-      const config = { headers: { Authorization: `Bearer ${token}` } };
-      const { data } = await api.get('/api/users/profile', config);
-      setUser(data);
+      // Interceptor đã tự động thêm header Authorization
+      const response = await api.get('/users/profile');
+      setUser(response.data);
     } catch (err) {
-      console.error("Không thể lấy thông tin profile", err);
-      const { user: basicUser } = jwtDecode(token);
-      setUser(basicUser);
+      console.error('Không thể lấy thông tin profile:', err);
+      logout(); // If token is invalid or fetching fails, log out
     }
   };
 
   const login = async (token) => {
     localStorage.setItem('token', token);
-    await fetchFullProfile(token);
+    await fetchFullProfile();
   };
 
   const logout = () => {
@@ -38,7 +37,7 @@ const AuthProvider = ({ children }) => {
         try {
           const decodedToken = jwtDecode(token);
           if (decodedToken.exp * 1000 > Date.now()) {
-            await fetchFullProfile(token);
+            await fetchFullProfile();
           } else {
             logout();
           }

@@ -7,7 +7,7 @@ import '../index.css';
 const GamePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user, isAuthLoading } = useContext(AuthContext);
+  const { user, loading: isAuthLoading } = useContext(AuthContext);
   const [game, setGame] = useState(null);
   const [relatedGames, setRelatedGames] = useState([]); 
   const [error, setError] = useState('');
@@ -24,10 +24,10 @@ const GamePage = () => {
 
     const fetchGameData = async () => {
       try {
-        const gameResponse = await api.get(`/api/games/${id}`);
+        const gameResponse = await api.get(`/games/${id}`); // Correct endpoint
         setGame(gameResponse.data);
 
-        const allGamesResponse = await api.get('/api/games');
+        const allGamesResponse = await api.get('/games'); // Correct endpoint
         const otherGames = allGamesResponse.data
           .filter(g => g._id !== id) 
           .slice(0, 4); 

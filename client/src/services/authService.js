@@ -1,12 +1,13 @@
 import api from '../api/axiosConfig.js'; 
 
-const API_URL = '/api/auth';
+const API_URL = '/auth';
 
-const register = (username, password, phoneNumber) => {
+const register = (username, password, phoneNumber, confirmPassword) => {
   return api.post(`${API_URL}/register`, {
     username,
     password,
     phoneNumber,
+    confirmPassword 
   });
 };
 
